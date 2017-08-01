@@ -1,0 +1,57 @@
+##PCA for FPKM of Plt, Meg, Ery, and imMKCL +/- Dox##
+##a = PC1/2, b = PC2/3, c = PC3/4, d = PC4/5##
+
+MyData <- read.csv(file="FPKM Table Meg +Dox.csv", header=TRUE, sep=",")
+View(MyData)
+rownames(MyData) = MyData[,1]
+View(MyData)
+m = MyData[,-1]
+m = data.matrix(m)
+View(m)
+lm = log(m)
+View(lm)
+lm = lm[!rowSums(!is.finite(lm)),]
+lm[!is.finite(lm)]=0
+tlm = t(lm)
+
+groups=c("Meg"
+,"38+Dox"
+,"38+Dox"
+,"38+Dox"
+,"dko+Dox"
+,"dko+Dox"
+,"dko+Dox"
+,"HET+Dox"
+,"HET+Dox"
+,"HET+Dox"
+,"Low+Dox"
+,"Low+Dox"
+,"Low+Dox"
+,"32+Dox"
+,"32+Dox"
+,"32+Dox")
+
+
+PSI.pca <- prcomp(tlm,center = TRUE,scale. = TRUE) 
+plot(PSI.pca)
+a <- ggbiplot(PSI.pca, obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE, var.axes=FALSE, choices=1:2, groups = groups)
+b <- ggbiplot(PSI.pca, obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE, var.axes=FALSE, choices=2:3, groups = groups)
+c <- ggbiplot(PSI.pca, obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE, var.axes=FALSE, choices=3:4, groups = groups)
+d <- ggbiplot(PSI.pca, obs.scale = 1, var.scale = 1, ellipse = TRUE, circle = TRUE, var.axes=FALSE, choices=4:5, groups = groups)
+
+pdf("a Meg +Dox.pdf")
+print(a)
+dev.off()
+
+pdf("b Meg +Dox.pdf")
+print(b)
+dev.off()
+
+pdf("c Meg +Dox.pdf")
+print(c)
+dev.off()
+
+pdf("d Meg +Dox.pdf")
+print(d)
+dev.off()
+
